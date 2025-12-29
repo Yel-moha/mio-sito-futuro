@@ -1,0 +1,77 @@
+# 1. Aggiorna il branch develop dal remoto
+git checkout develop
+git pull origin develop
+
+# 2. Crea un nuovo branch per la feature
+git checkout -b feature/nome-feature
+
+# 3. Lavora sui file... poi:
+git add .
+git commit -m "Aggiunto design responsive per la sezione hero"
+
+# 4. Continua a committare man mano
+git add .
+git commit -m "Fixato bug nel menu mobile"
+
+# 5. Quando la feature è pronta, merge su develop
+git checkout develop
+git pull origin develop  # aggiorna di nuovo
+git merge feature/nome-feature
+
+# 6. Elimina il branch locale (opzionale)
+git branch -d feature/nome-feature
+
+# 7. Pusha develop sul remoto
+git push origin develop
+
+___________________________________________________________________________________________
+
+
+Commit Significativi
+Usa messaggi chiari seguendo questa convenzione:
+
+feat: aggiunto form di contatti
+fix: risolto bug nel menu mobile
+docs: aggiornato README
+style: migliorato spacing CSS
+refactor: riorganizzato struttura cartelle
+test: aggiunti test per autenticazione
+
+_____________________________________________________________________________________________
+
+
+3. Issues e Milestone
+Crea issue per ogni task/feature, assegnale a milestone (es. "Versione 1.0", "App Mobile").
+
+4. Actions (CI/CD)
+Per automatizzare test e deploy. Un .github/workflows/deploy.yml base:
+
+yaml
+name: Deploy to GitHub Pages
+on:
+  push:
+    branches: [ main ]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: echo "Qui i comandi per buildare e deployare"
+Comandi Git che Userai Spesso
+bash
+# Stato dei file
+git status
+
+# Storia dei commit
+git log --oneline --graph
+
+# Vedere differenze
+git diff
+
+# Ripristinare un file
+git checkout -- nomefile.html
+
+# Sincronizzare fork (se fai fork di altri progetti)
+git remote add upstream https://github.com/original/repo.git
+git fetch upstream
+git merge upstream/main

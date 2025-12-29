@@ -1,3 +1,30 @@
+# Il Mio Percorso verso l'Autonomia Economica
+
+> "Un viaggio di mille miglia inizia con un singolo passo" - Lao Tzu
+
+## 🎯 Obiettivo
+Costruire un'attività digitale che mi porti all'autonomia economica.
+
+## 🚀 Fasi del Progetto
+1. [X] Sito web base (HTML/CSS/JS)
+2. [ ] Definizione della nicchia/contesto
+3. [ ] Contenuti di valore
+4. [ ] Sistema di monetizzazione
+5. [ ] Applicazione mobile collegata
+
+## 🛠 Tecnologie Attuali
+- HTML5, CSS3, JavaScript
+- Git & GitHub
+- Visual Studio Code
+
+## 📁 Struttura
+- `/frontend` - Codice del sito web
+- `/docs` - Documentazione e planning
+- (future: `/backend`, `/mobile-app`)
+
+## 📅 Diario di Bordo
+- **Giorno 1**: Creato struttura base del sito e repository GitHub
+
 mio-sito-futuro/
 │
 ├── .gitignore              # File da ignorare (MOLTO IMPORTANTE!)
