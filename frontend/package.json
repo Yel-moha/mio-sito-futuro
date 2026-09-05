@@ -1,0 +1,19 @@
+{
+  "name": "yem-embedded-site",
+  "version": "1.0.0",
+  "description": "Sito vetrina di YEM Embedded - piccole soluzioni embedded su misura",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "assets": "node scripts/optimize-images.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
+  }
+}

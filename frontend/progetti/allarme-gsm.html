@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allarme domestico GSM — Case study | YEM Embedded</title>
+    <meta
+      name="description"
+      content="Case study: centralina d'allarme domestica su Arduino Mega 2560 con display LCD, tastiera, sensori RF 433 MHz e modulo GSM SIM7600 per notifiche SMS. Architettura firmware, pinout e galleria."
+    />
+    <meta name="author" content="Youssef El Mohajir" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0b0f14" />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Allarme domestico GSM — Case study | YEM Embedded" />
+    <meta
+      property="og:description"
+      content="Centralina d'allarme su Arduino Mega con LCD, tastiera, RF 433 MHz e GSM. Architettura firmware modulare, pinout, contenitore su misura."
+    />
+    <meta property="og:locale" content="it_IT" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../src/styles/project-page.css" />
+    <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+    <script>
+      // Rete di sicurezza indipendente dai moduli ES: se lo script principale
+      // (type="module") non parte - es. pagina aperta da file:// invece che da un
+      // server, dove i browser bloccano i moduli - mostra comunque i contenuti
+      // ".reveal" dopo un breve ritardo invece di lasciarli invisibili.
+      window.setTimeout(function () {
+        document.querySelectorAll('.reveal').forEach(function (el) {
+          el.classList.add('is-visible');
+        });
+      }, 1200);
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Vai al contenuto</a>
+
+    <header class="nav">
+      <div class="nav__inner">
+        <a class="brand" href="../index.html" aria-label="YEM Embedded, home">
+          <span class="brand__mark">&lt;/&gt;</span> YEM<span class="brand__dot">·</span>Embedded
+        </a>
+
+        <nav class="nav__links" id="nav-links" aria-label="Navigazione principale">
+          <a href="../index.html#servizi">Servizi</a>
+          <a href="../index.html#progetti">Progetti</a>
+          <a href="../index.html#chi-sono">Chi sono</a>
+          <a href="../index.html#competenze">Competenze</a>
+          <a class="btn btn--primary nav__cta" href="../index.html#contatti">Contattami</a>
+        </nav>
+
+        <button
+          class="nav__toggle"
+          type="button"
+          aria-label="Apri il menu"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <div class="container">
+        <nav class="crumbs" aria-label="Percorso">
+          <a href="../index.html">Home</a> <span aria-hidden="true">/</span>
+          <a href="../index.html#progetti">Progetti</a> <span aria-hidden="true">/</span>
+          <span>Allarme GSM</span>
+        </nav>
+      </div>
+
+      <!-- ============ HERO PROGETTO ============ -->
+      <section class="p-hero">
+        <div class="hero__grid-bg" aria-hidden="true"></div>
+        <div class="container p-hero__inner">
+          <div class="reveal">
+            <p class="eyebrow">Case study · progetto personale</p>
+            <h1>Allarme domestico GSM</h1>
+            <p class="p-hero__lead">
+              Centralina d'allarme su Arduino Mega 2560 con display LCD 20×4, tastiera 4×3,
+              sensori radio 433 MHz e modulo GSM SIM7600 per gli SMS di notifica. PIN,
+              numero di telefono e sensori sono persistiti in EEPROM; il menu su LCD
+              gestisce attivazione, sensori e test.
+            </p>
+            <div class="tag-row">
+              <span class="tag">Arduino Mega 2560</span>
+              <span class="tag">SIM7600 (AT)</span>
+              <span class="tag">RF 433 MHz — RCSwitch</span>
+              <span class="tag">LCD I²C 20×4</span>
+              <span class="tag">EEPROM</span>
+              <span class="tag">C / C++</span>
+            </div>
+          </div>
+          <figure class="p-hero__media reveal" data-lightbox>
+            <img
+              src="../src/assets/projects/allarme-gsm/progetto-finito-frontale.jpg"
+              alt="Allarme GSM completato e montato nel contenitore, con LCD e tastiera in vista"
+              width="1050"
+              height="1400"
+            />
+            <figcaption class="visually-hidden">Il progetto finito nel contenitore</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ============ PANORAMICA + SPECIFICHE ============ -->
+      <section class="section">
+        <div class="container split">
+          <div class="reveal">
+            <p class="eyebrow">Panoramica</p>
+            <h2>Come funziona</h2>
+            <p style="margin-top: 1rem; color: var(--text-muted)">
+              Il sistema ha due stati principali: <strong>NORMAL</strong> (mostra lo stato e
+              accetta il PIN) e <strong>CONFIG</strong> (menu di configurazione). L'allarme
+              si attiva da menu con conto alla rovescia oppure via RF ricevendo il codice
+              del dispositivo; si disattiva digitando il PIN e confermando con
+              <code>#</code>. Allo scatto, il modulo GSM invia un SMS al numero configurato
+              e la sirena su relè entra in funzione.
+            </p>
+
+            <h3 style="margin-top: 2rem">Caratteristiche principali</h3>
+            <ul class="feature-list">
+              <li><strong>LCD 20×4 su I²C</strong> (0x27) per stato e navigazione menu.</li>
+              <li><strong>Tastiera 4×3</strong> per PIN, navigazione e configurazione.</li>
+              <li><strong>Sensori RF 433 MHz</strong>: associazione, trasmissione codice e cancellazione (fino a 20 sensori).</li>
+              <li><strong>Persistenza EEPROM</strong> con controllo di versione dei dati.</li>
+              <li><strong>SMS via SIM7600</strong> con comandi AT su <code>Serial1</code>.</li>
+              <li><strong>Attivazione/disattivazione</strong> con PIN o via codice RF.</li>
+              <li><strong>Sirena su relè esterno</strong> più buzzer integrato.</li>
+              <li><strong>Retroilluminazione</strong> regolata via PWM.</li>
+            </ul>
+          </div>
+
+          <aside class="spec reveal" aria-label="Scheda tecnica">
+            <h3>In breve</h3>
+            <dl>
+              <dt>MCU</dt><dd>ATmega2560</dd>
+              <dt>Board</dt><dd>arduino:avr:mega</dd>
+              <dt>Display</dt><dd>LCD 20×4 I²C</dd>
+              <dt>Input</dt><dd>Tastiera 4×3</dd>
+              <dt>Radio</dt><dd>RX/TX 433 MHz</dd>
+              <dt>Rete</dt><dd>GSM/4G SIM7600</dd>
+              <dt>Storage</dt><dd>EEPROM interna</dd>
+              <dt>Firmware</dt><dd>8 file .ino</dd>
+              <dt>Sensori</dt><dd>fino a 20</dd>
+            </dl>
+          </aside>
+        </div>
+      </section>
+
+      <!-- ============ ARCHITETTURA FIRMWARE ============ -->
+      <section class="section section--tint">
+        <div class="container">
+          <div class="section__head reveal">
+            <p class="eyebrow">Architettura</p>
+            <h2>Firmware modulare</h2>
+            <p>
+              Il codice è diviso per responsabilità: un file core per stato e ciclo
+              principale, sette moduli per hardware e funzioni.
+            </p>
+          </div>
+
+          <div class="modules reveal">
+            <div class="modules__core">
+              <b>AllarmeGSM.ino</b> — setup/loop, variabili globali e stato, inizializzazione LCD, RF, tastiera ed EEPROM
+            </div>
+            <div class="modules__grid">
+              <div class="module"><b>gsm.ino</b><span>SIM7600: <code>PowerOn()</code>, <code>sendATcommand()</code>, <code>SendingShortMessage()</code>, controllo alimentazione via POWERKEY.</span></div>
+              <div class="module"><b>eeprom.ino</b><span>Lettura/scrittura di seriale, PIN, telefono e sensori RF; controllo versione (<code>VERSION = 119</code>).</span></div>
+              <div class="module"><b>keyboard.ino</b><span>Scansione tastiera 4×3, gestione PIN e transizioni di stato NORMAL ↔ CONFIG.</span></div>
+              <div class="module"><b>lcd.ino</b><span>Schermate del display: <code>LCDNormal()</code> (stato) e <code>LCDConfig()</code> (menu).</span></div>
+              <div class="module"><b>menu.ino</b><span>Menu di configurazione e azioni: <code>ConfigOptions()</code>, <code>CheckKeypadMenu()</code>, <code>GetConfig()</code>.</span></div>
+              <div class="module"><b>config.ino</b><span>Utility RF e test: <code>TestIO()</code>, <code>SendRFCode()</code>, <code>GetRFCode()</code>, <code>DelRFCode()</code>.</span></div>
+              <div class="module"><b>utility.ino</b><span>Buzzer, logica allarme <code>AlarmON()</code>/<code>AlarmOFF()</code>, SMS di attivazione/disattivazione, abilitazione RF.</span></div>
+            </div>
+          </div>
+
+          <h3 style="margin-top: 2.5rem">Pinout principale</h3>
+          <div class="table-wrap">
+            <table class="pinout">
+              <thead>
+                <tr><th>Segnale</th><th>Pin</th><th>Funzione</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>POWERKEY</td><td><code>4</code></td><td>Accensione modulo GSM</td></tr>
+                <tr><td>FLIGHTMODE</td><td><code>3</code></td><td>Modalità aereo GSM</td></tr>
+                <tr><td>GSMRELAY</td><td><code>11</code></td><td>Alimentazione modulo GSM</td></tr>
+                <tr><td>RFDATA</td><td><code>2</code></td><td>Ricezione RF (INT0)</td></tr>
+                <tr><td>RFTRASMISSION</td><td><code>14</code></td><td>Trasmettitore RF</td></tr>
+                <tr><td>EXTALARM</td><td><code>13</code></td><td>Ingresso allarme esterno (opzionale)</td></tr>
+                <tr><td>EXTRELAY</td><td><code>12</code></td><td>Uscita sirena</td></tr>
+                <tr><td>BUZZERPIN</td><td><code>5</code></td><td>Buzzer piezo</td></tr>
+                <tr><td>LUMINOSITY</td><td><code>6</code></td><td>PWM retroilluminazione LCD</td></tr>
+                <tr><td>Tastiera</td><td><code>24,26,28,30</code> / <code>25,27,29</code></td><td>Righe / colonne 4×3</td></tr>
+                <tr><td>LCD I²C</td><td><code>20 SDA</code> / <code>21 SCL</code></td><td>Bus I²C, indirizzo 0x27</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ MENU LCD ============ -->
+      <section class="section">
+        <div class="container">
+          <div class="section__head reveal">
+            <p class="eyebrow">Interfaccia</p>
+            <h2>Menu su LCD</h2>
+            <p>
+              Navigazione con <code>*</code> (scorri) e <code>#</code> (conferma). Voci:
+              Attiva Allarme · Modifica Seriale · Modifica PIN · Modifica Telefono ·
+              Associa Sensori · Elimina Sensori · Trasmetti Codice · Test I/O · Esci.
+            </p>
+          </div>
+
+          <div class="lcd-strip reveal">
+            <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/menu-lcd-1.jpg" alt="Schermata menu LCD 1" loading="lazy" /><figcaption>Menu · 1</figcaption></figure>
+            <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/menu-lcd-2.jpg" alt="Schermata menu LCD 2" loading="lazy" /><figcaption>Menu · 2</figcaption></figure>
+            <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/menu-lcd-3.jpg" alt="Schermata menu LCD 3" loading="lazy" /><figcaption>Menu · 3</figcaption></figure>
+            <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/menu-lcd-4.jpg" alt="Schermata menu LCD 4" loading="lazy" /><figcaption>Menu · 4</figcaption></figure>
+            <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/menu-lcd-5.jpg" alt="Schermata menu LCD 5" loading="lazy" /><figcaption>Menu · 5</figcaption></figure>
+            <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/menu-lcd-6.jpg" alt="Schermata menu LCD 6" loading="lazy" /><figcaption>Menu · 6</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ GALLERIA ============ -->
+      <section class="section section--tint">
+        <div class="container">
+          <div class="section__head reveal">
+            <p class="eyebrow">Galleria</p>
+            <h2>Componenti, base e contenitore</h2>
+            <p>Clic su un'immagine per ingrandirla. Frecce per scorrere, Esc per chiudere.</p>
+          </div>
+
+          <div class="gallery-group reveal">
+            <h3>Componenti</h3>
+            <div class="gallery">
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/arduino-mega.jpg" alt="Arduino Mega 2560" loading="lazy" /><figcaption>Arduino Mega 2560</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/modulo-sim7600.jpg" alt="Modulo GSM/4G SIM7600" loading="lazy" /><figcaption>Modulo GSM SIM7600</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/display-lcd-i2c.jpg" alt="Display LCD 20x4 con backpack I2C" loading="lazy" /><figcaption>Display LCD I²C 20×4</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/rf-433mhz.jpg" alt="Moduli ricetrasmettitore RF 433 MHz" loading="lazy" /><figcaption>Ricetrasmettitore 433 MHz</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/antenna-rf433.jpg" alt="Antenna RF 433 MHz" loading="lazy" /><figcaption>Antenna 433 MHz</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/tastiera-4x3.jpg" alt="Tastiera matriciale 4x3" loading="lazy" /><figcaption>Tastiera 4×3</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/modulo-rele-4ch.jpg" alt="Modulo relè a 4 canali" loading="lazy" /><figcaption>Modulo relè</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/buzzer-5v.jpg" alt="Buzzer piezo 5V" loading="lazy" /><figcaption>Buzzer 5V</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/sensore-pir-433.jpg" alt="Sensore PIR 433 MHz" loading="lazy" /><figcaption>Sensore PIR 433 MHz</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/sensore-apertura-433.jpg" alt="Sensore di apertura porta 433 MHz" loading="lazy" /><figcaption>Sensore apertura</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/telecomando-433.jpg" alt="Telecomando 433 MHz" loading="lazy" /><figcaption>Telecomando 433 MHz</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/sirena-5v.jpg" alt="Sirena 5V" loading="lazy" /><figcaption>Sirena 5V</figcaption></figure>
+            </div>
+          </div>
+
+          <div class="gallery-group reveal">
+            <h3>Base circuitale</h3>
+            <div class="gallery">
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/base-componenti-fronte.jpg" alt="Base circuitale, lato fronte, senza componenti" loading="lazy" /><figcaption>Base — fronte</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/base-con-componenti.jpg" alt="Base circuitale con i moduli montati" loading="lazy" /><figcaption>Base con componenti</figcaption></figure>
+            </div>
+          </div>
+
+          <div class="gallery-group reveal">
+            <h3>Contenitore</h3>
+            <div class="gallery">
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/contenitore-frontale.jpg" alt="Contenitore, vista frontale con fissaggi" loading="lazy" /><figcaption>Frontale — fissaggi</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/contenitore-interno.jpg" alt="Contenitore, vista interna" loading="lazy" /><figcaption>Vista interna</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/contenitore-laterale.jpg" alt="Contenitore, vista laterale con passaggi cavi" loading="lazy" /><figcaption>Vista laterale</figcaption></figure>
+              <figure data-lightbox><img src="../src/assets/projects/allarme-gsm/progetto-finito-frontale.jpg" alt="Progetto finito, vista frontale" loading="lazy" /><figcaption>Progetto finito</figcaption></figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ BUILD & LIBRERIE ============ -->
+      <section class="section">
+        <div class="container split">
+          <div class="reveal">
+            <p class="eyebrow">Toolchain</p>
+            <h2>Build &amp; upload</h2>
+            <p style="margin-top: 1rem; color: var(--text-muted)">
+              Progetto per Arduino IDE o <code>arduino-cli</code>. Il modulo GSM comunica
+              via comandi AT su <code>Serial1</code> (TX1/RX1).
+            </p>
+            <div class="code">
+              <div class="code__bar"><span>bash</span><span>arduino-cli</span></div>
+              <pre><span class="cmt"># core AVR</span>
+<span class="cmd">arduino-cli</span> core update-index
+<span class="cmd">arduino-cli</span> core install arduino:avr
+
+<span class="cmt"># compila e carica sul Mega</span>
+<span class="cmd">arduino-cli</span> compile --fqbn arduino:avr:mega .
+<span class="cmd">arduino-cli</span> upload -p /dev/ttyACM0 --fqbn arduino:avr:mega .</pre>
+            </div>
+          </div>
+
+          <aside class="spec reveal" aria-label="Librerie">
+            <h3>Librerie</h3>
+            <dl>
+              <dt>LCD</dt><dd>LiquidCrystal_I2C</dd>
+              <dt>Radio</dt><dd>RCSwitch</dd>
+              <dt>Storage</dt><dd>EEPROM</dd>
+              <dt>Bus</dt><dd>SPI</dd>
+            </dl>
+          </aside>
+        </div>
+
+        <div class="container">
+          <div class="callout reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4M12 8h.01" /></svg>
+            <p>
+              Progetto personale sviluppato per uso privato: il codice sorgente non è
+              pubblico. Questa pagina è la documentazione tecnica del progetto — per
+              dettagli implementativi o una versione adattata alle tue esigenze,
+              <a href="../index.html#contatti">scrivimi</a>.
+            </p>
+          </div>
+
+          <a class="back-link" href="../index.html#progetti">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6" /></svg>
+            Tutti i progetti
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__grid">
+          <div class="footer__brand">
+            <a class="brand" href="../index.html"><span class="brand__mark">&lt;/&gt;</span> YEM<span class="brand__dot">·</span>Embedded</a>
+            <p>Piccole soluzioni embedded su misura — Firenze. Prototipazione, firmware C/C++, integrazione hardware.</p>
+          </div>
+          <div>
+            <h4>Sezioni</h4>
+            <ul>
+              <li><a href="../index.html#servizi">Servizi</a></li>
+              <li><a href="../index.html#progetti">Progetti</a></li>
+              <li><a href="../index.html#chi-sono">Chi sono</a></li>
+              <li><a href="../index.html#competenze">Competenze</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Contatti</h4>
+            <ul>
+              <li><a href="mailto:elmohassef@gmail.com">elmohassef@gmail.com</a></li>
+              <li><a href="https://linkedin.com/in/youssef-el-mohajir" target="_blank" rel="noopener">LinkedIn</a></li>
+              <li><a href="https://github.com/Yel-moha" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <span>© <span data-current-year>2026</span> Youssef El Mohajir — YEM Embedded</span>
+          <span>Costruito con Vite + TypeScript</span>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="../src/pages/allarme-gsm.ts"></script>
+  </body>
+</html>

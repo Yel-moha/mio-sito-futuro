@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YEM Embedded — piccole soluzioni embedded su misura</title>
+    <meta
+      name="description"
+      content="YEM Embedded — Youssef El Mohajir, sviluppatore embedded C/C++ a Firenze. Prototipazione, firmware, integrazione GSM / RF 433 MHz / sensori per piccoli sistemi elettronici su misura."
+    />
+    <meta name="author" content="Youssef El Mohajir" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0b0f14" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="YEM Embedded — piccole soluzioni embedded su misura" />
+    <meta
+      property="og:description"
+      content="Prototipazione e firmware C/C++ per piccoli sistemi elettronici. Case study: allarme domestico GSM su Arduino Mega."
+    />
+    <meta property="og:locale" content="it_IT" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <noscript><style>.reveal { opacity: 1 !important; transform: none !important; }</style></noscript>
+    <script>
+      // Rete di sicurezza indipendente dai moduli ES: se lo script principale
+      // (type="module") non parte - es. pagina aperta da file:// invece che da un
+      // server, dove i browser bloccano i moduli - mostra comunque i contenuti
+      // ".reveal" dopo un breve ritardo invece di lasciarli invisibili.
+      window.setTimeout(function () {
+        document.querySelectorAll('.reveal').forEach(function (el) {
+          el.classList.add('is-visible');
+        });
+      }, 1200);
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Vai al contenuto</a>
+
+    <header class="nav">
+      <div class="nav__inner">
+        <a class="brand" href="#home" aria-label="YEM Embedded, home">
+          <span class="brand__mark">&lt;/&gt;</span> YEM<span class="brand__dot">·</span>Embedded
+        </a>
+
+        <nav class="nav__links" id="nav-links" aria-label="Navigazione principale">
+          <a href="#servizi">Servizi</a>
+          <a href="#progetti">Progetti</a>
+          <a href="#chi-sono">Chi sono</a>
+          <a href="#competenze">Competenze</a>
+          <a class="btn btn--primary nav__cta" href="#contatti">Contattami</a>
+        </nav>
+
+        <button
+          class="nav__toggle"
+          type="button"
+          aria-label="Apri il menu"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          <svg class="icon-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          <svg class="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ================= HERO ================= -->
+      <section class="hero" id="home">
+        <div class="hero__grid-bg" aria-hidden="true"></div>
+        <div class="hero__glow" aria-hidden="true"></div>
+        <div class="container hero__inner">
+          <div class="hero__content reveal">
+            <p class="eyebrow">Piccole soluzioni embedded</p>
+            <h1>Progetto elettronica che <span class="accent">funziona davvero</span>.</h1>
+            <p class="hero__lead">
+              Sono Youssef El Mohajir, tecnico informatico ed elettronico di Firenze, in
+              formazione avanzata come sviluppatore C/C++ a 42 Firenze. Porto un'idea da
+              schema a prototipo funzionante: firmware, integrazione hardware, test.
+            </p>
+            <div class="hero__actions">
+              <a class="btn btn--primary" href="#progetti">
+                Vedi i progetti
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </a>
+              <a class="btn btn--ghost" href="#contatti">Parliamo del tuo</a>
+            </div>
+            <div class="hero__meta">
+              <div class="stat"><span class="stat__num">C / C++</span><span class="stat__label">bare-metal &amp; Linux</span></div>
+              <div class="stat"><span class="stat__num">RF · GSM · I2C</span><span class="stat__label">integrazione moduli</span></div>
+              <div class="stat"><span class="stat__num">5 anni</span><span class="stat__label">background telecomunicazioni</span></div>
+            </div>
+          </div>
+
+          <div class="hero__panel reveal" aria-hidden="true">
+            <div class="hero__panel-bar"><span></span><span></span><span></span>&nbsp; allarme-gsm.ino</div>
+            <div class="hero__panel-body">
+<span class="c">// ricezione codice sensore RF 433 MHz</span><br />
+<span class="k">if</span> (rf.available()) {<br />
+&nbsp;&nbsp;<span class="k">unsigned long</span> code = rf.getReceivedValue();<br />
+&nbsp;&nbsp;<span class="k">if</span> (isPairedSensor(code)) {<br />
+&nbsp;&nbsp;&nbsp;&nbsp;triggerAlarm();<br />
+&nbsp;&nbsp;&nbsp;&nbsp;sendSMS(<span class="s">"Allarme attivato"</span>);<br />
+&nbsp;&nbsp;}<br />
+}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SERVIZI ================= -->
+      <section class="section section--tint" id="servizi">
+        <div class="container">
+          <div class="section__head reveal">
+            <p class="eyebrow">Cosa faccio</p>
+            <h2>Dal prototipo su breadboard al dispositivo nella scatola.</h2>
+            <p>
+              Mi occupo di piccoli sistemi embedded completi: elettronica, firmware e
+              messa in opera. Niente strutture enormi, solo soluzioni mirate e mantenibili.
+            </p>
+          </div>
+
+          <div class="grid grid--2">
+            <article class="card reveal">
+              <span class="card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" /><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2M9 9h6v6H9z" /></svg>
+              </span>
+              <h3>Prototipazione rapida</h3>
+              <p>
+                Da idea o schema a prototipo funzionante su Arduino (Uno/Nano/Mega) e
+                Raspberry Pi. Scelta componenti, cablaggio, primo firmware e validazione.
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <span class="card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6M14 4l-4 16" /></svg>
+              </span>
+              <h3>Firmware C / C++</h3>
+              <p>
+                Codice bare-metal e su Linux: macchine a stati, gestione della memoria,
+                driver per display, tastiere e sensori, persistenza su EEPROM.
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <span class="card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l3-8 4 16 3-8h4" /></svg>
+              </span>
+              <h3>Integrazione GSM · RF · IoT</h3>
+              <p>
+                Moduli radio 433 MHz, GSM/4G (SIM7600) con comandi AT, bus I²C/SPI,
+                notifiche SMS e sensoristica. Faccio dialogare i sottosistemi.
+              </p>
+            </article>
+
+            <article class="card reveal">
+              <span class="card__icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></svg>
+              </span>
+              <h3>Assemblaggio &amp; messa in opera</h3>
+              <p>
+                Base circuitale ordinata, contenitore su misura con passaggi cavi e
+                fissaggi, test I/O sul campo e documentazione tecnica del progetto.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROGETTI ================= -->
+      <section class="section" id="progetti">
+        <div class="container">
+          <div class="section__head reveal">
+            <p class="eyebrow">Portfolio</p>
+            <h2>Progetti realizzati</h2>
+            <p>Sistemi costruiti da zero — hardware, firmware e contenitore.</p>
+          </div>
+
+          <div class="projects">
+            <article class="project project--featured reveal">
+              <div class="project__media">
+                <span class="project__badge">Progetto di punta</span>
+                <img
+                  src="./src/assets/projects/allarme-gsm/progetto-finito-frontale.jpg"
+                  alt="Allarme GSM completato, montato nel contenitore con display LCD e tastiera"
+                  loading="lazy"
+                  width="1050"
+                  height="1400"
+                />
+              </div>
+              <div class="project__body">
+                <div class="tag-row">
+                  <span class="tag">Arduino Mega 2560</span>
+                  <span class="tag">SIM7600 GSM</span>
+                  <span class="tag">RF 433 MHz</span>
+                  <span class="tag">C / C++</span>
+                </div>
+                <h3>Allarme domestico GSM</h3>
+                <p>
+                  Centralina d'allarme su Arduino Mega con display LCD 20×4, tastiera 4×3,
+                  sensori radio 433 MHz e modulo GSM per gli SMS di notifica. Configurazione
+                  (PIN, numero, sensori) persistita in EEPROM, sirena a relè, contenitore
+                  personalizzato. Firmware modulare in otto file <code>.ino</code>.
+                </p>
+                <a class="project__link" href="./progetti/allarme-gsm.html">
+                  Apri il case study
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                </a>
+              </div>
+            </article>
+
+            <article class="project project--mini reveal">
+              <div class="project__body">
+                <span class="project__tagline">Esperienza professionale · RCProject</span>
+                <h3>Display prezzi carburanti</h3>
+                <p>
+                  Sistema embedded su Raspberry Pi (Linux), in C/C++, per la
+                  visualizzazione dei prezzi medi regionali dei carburanti: progettazione,
+                  integrazione hardware/software, testing e debugging.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Raspberry Pi</span>
+                  <span class="tag">Linux</span>
+                  <span class="tag">C / C++</span>
+                </div>
+                <span class="project__meta">2023 – 2024</span>
+              </div>
+            </article>
+
+            <article class="project project--mini reveal">
+              <div class="project__body">
+                <span class="project__tagline">Lab a basso livello</span>
+                <h3>Nano-OLED</h3>
+                <p>
+                  Banco di prova su Arduino Nano + display OLED I²C 128×32: ogni milestone
+                  parte dalla libreria e poi la smonta a livello di registro. Studio
+                  pratico di I²C, timer e memoria sull'ATmega328P.
+                </p>
+                <div class="tag-row">
+                  <span class="tag">Arduino Nano</span>
+                  <span class="tag">OLED SSD1306</span>
+                  <span class="tag">Registri AVR</span>
+                </div>
+                <span class="project__meta">In evoluzione</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CHI SONO ================= -->
+      <section class="section section--tint" id="chi-sono">
+        <div class="container">
+          <div class="section__head reveal">
+            <p class="eyebrow">Chi sono</p>
+            <h2>Youssef El Mohajir</h2>
+          </div>
+
+          <div class="about">
+            <div class="about__photo reveal">
+              <img
+                src="./src/assets/profile/youssef.jpg"
+                alt="Ritratto di Youssef El Mohajir"
+                width="640"
+                height="640"
+              />
+            </div>
+            <div class="about__text reveal">
+              <p>
+                Tecnico informatico ed elettronico fiorentino, diplomato in
+                Telecomunicazioni, Sistemi e Reti, oggi in formazione avanzata come
+                sviluppatore C/C++ a 42 Firenze.
+              </p>
+              <p>
+                Il mio focus è su algoritmi, strutture dati, programmazione a basso
+                livello, gestione della memoria e programmazione di sistema su ambienti
+                Unix/Linux. A questo affianco esperienza pratica di sviluppo embedded in
+                C/C++ su Raspberry Pi e un solido background di elettronica ed elaborazione
+                dei segnali dal percorso tecnico quinquennale.
+              </p>
+              <p>
+                YEM Embedded è il modo in cui metto tutto questo al servizio di chi ha
+                bisogno di una piccola soluzione elettronica fatta bene.
+              </p>
+
+              <div class="timeline">
+                <div class="timeline__group">
+                  <h4>Formazione</h4>
+                  <div class="timeline__item">
+                    <div class="t">42 Firenze — scuola di programmazione peer-to-peer</div>
+                    <div class="m">dal 11/2024</div>
+                    <p>Sviluppo C e C++, processo di compilazione, algoritmi, memoria e programmazione di sistema su Unix/Linux. Debugging con gdb, valgrind, AddressSanitizer. Reti TCP/IP (NetPractice).</p>
+                  </div>
+                  <div class="timeline__item">
+                    <div class="t">Università di Firenze — Matematica “Ulisse Dini”</div>
+                    <div class="m">dal 09/2020 · part-time</div>
+                    <p>Laurea in Matematica in corso, completamento legato agli impegni lavorativi.</p>
+                  </div>
+                  <div class="timeline__item">
+                    <div class="t">ITT “Benvenuto Cellini”, Firenze</div>
+                    <div class="m">2016 · diploma</div>
+                    <p>Tecnico delle Telecomunicazioni, Sistemi e Reti. Qualifica di Operatore Elettronico/Informatico, laboratorio di elettronica e lettura schemi.</p>
+                  </div>
+                </div>
+
+                <div class="timeline__group">
+                  <h4>Esperienza</h4>
+                  <div class="timeline__item">
+                    <div class="t">Tecnico RCProject — sviluppo embedded, assistenza IT e reti</div>
+                    <div class="m">Firenze · 07/2023 – 08/2024</div>
+                    <p>Sistema embedded C/C++ da zero su Raspberry Pi. Manutenzione terminali self-service (OPT) Q8, assistenza remota Gilbarco Passport, configurazione reti LAN/Wi-Fi.</p>
+                  </div>
+                  <div class="timeline__item">
+                    <div class="t">Tutor di Matematica</div>
+                    <div class="m">Mummu Academy · dal 2021 &nbsp;|&nbsp; UNIFI (S4S) · 2022–2023</div>
+                    <p>Spiegazione chiara di concetti tecnici complessi, preparazione esami, recupero debiti.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= COMPETENZE ================= -->
+      <section class="section" id="competenze">
+        <div class="container">
+          <div class="section__head reveal">
+            <p class="eyebrow">Stack</p>
+            <h2>Competenze tecniche</h2>
+          </div>
+
+          <div class="skills">
+            <div class="skills__group reveal">
+              <h4>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 6-6 6 6 6M16 6l6 6-6 6" /></svg>
+                Linguaggi
+              </h4>
+              <ul>
+                <li>C / C++ (STL, gestione memoria)</li>
+                <li>Python — scripting</li>
+                <li>Bash</li>
+                <li>MATLAB (base)</li>
+              </ul>
+            </div>
+
+            <div class="skills__group reveal">
+              <h4>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></svg>
+                Sistema &amp; Linux
+              </h4>
+              <ul>
+                <li>Programmazione di sistema Unix/Linux</li>
+                <li>Processi e comunicazione tra componenti</li>
+                <li>Debug: gdb, valgrind, ASan</li>
+                <li>Reti: TCP/IP, socket, subnetting</li>
+              </ul>
+            </div>
+
+            <div class="skills__group reveal">
+              <h4>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="12" height="12" rx="1" /><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2" /></svg>
+                Hardware &amp; elettronica
+              </h4>
+              <ul>
+                <li>Arduino (AVR) e Raspberry Pi</li>
+                <li>RF 433 MHz, GSM/4G (AT), I²C, SPI</li>
+                <li>Display LCD/OLED, tastiere, relè, sensori</li>
+                <li>Lettura schemi, elaborazione segnali</li>
+              </ul>
+            </div>
+
+            <div class="skills__group reveal">
+              <h4>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4l-2.1 2.1-2.4-.6-.6-2.4z" /></svg>
+                Strumenti
+              </h4>
+              <ul>
+                <li>Git, code review, peer evaluation</li>
+                <li>Arduino IDE / arduino-cli, PlatformIO</li>
+                <li>Testing funzionale e di regressione</li>
+                <li>AutoCAD (base)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="langs reveal">
+            <span class="lang"><b>Italiano</b><span>madrelingua</span></span>
+            <span class="lang"><b>Arabo</b><span>madrelingua</span></span>
+            <span class="lang"><b>Inglese</b><span>B2</span></span>
+            <span class="lang"><b>Francese</b><span>B1</span></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CONTATTI ================= -->
+      <section class="section section--tint" id="contatti">
+        <div class="container container--narrow">
+          <div class="section__head reveal">
+            <p class="eyebrow">Contatti</p>
+            <h2>Hai un'idea da mettere su una scheda?</h2>
+            <p>
+              Scrivimi due righe sul progetto: ti dico se posso aiutarti, con che
+              tempi e come procederei.
+            </p>
+          </div>
+
+          <div class="contact reveal">
+            <a class="contact__item" href="mailto:elmohassef@gmail.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
+              <span><span class="l">Email</span><span class="v">elmohassef@gmail.com</span></span>
+            </a>
+            <a class="contact__item" href="tel:+393450726127">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2H7a2 2 0 0 1 2 1.7c.1 1.2.4 2.3.7 3.4a2 2 0 0 1-.5 2.1L8 10.3a16 16 0 0 0 6 6l1.1-1.1a2 2 0 0 1 2.1-.5c1.1.3 2.2.6 3.4.7A2 2 0 0 1 22 16.9z" /></svg>
+              <span><span class="l">Telefono</span><span class="v">+39 345 072 6127</span></span>
+            </a>
+            <a class="contact__item" href="https://linkedin.com/in/youssef-el-mohajir" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3" /><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 13v4" /></svg>
+              <span><span class="l">LinkedIn</span><span class="v">youssef-el-mohajir</span></span>
+            </a>
+            <a class="contact__item" href="https://github.com/Yel-moha" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.9a3.4 3.4 0 0 0-.9-2.6c3-.3 6.2-1.5 6.2-6.7A5.2 5.2 0 0 0 19 5.2 4.9 4.9 0 0 0 18.9 1S17.7.6 15 2.5a13.4 13.4 0 0 0-6 0C6.3.6 5.1 1 5.1 1A4.9 4.9 0 0 0 5 5.2 5.2 5.2 0 0 0 3.7 8.8c0 5.2 3.2 6.4 6.2 6.7A3.4 3.4 0 0 0 9 18.1V22" /></svg>
+              <span><span class="l">GitHub</span><span class="v">Yel-moha</span></span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <div class="footer__grid">
+          <div class="footer__brand">
+            <a class="brand" href="#home"><span class="brand__mark">&lt;/&gt;</span> YEM<span class="brand__dot">·</span>Embedded</a>
+            <p>Piccole soluzioni embedded su misura — Firenze. Prototipazione, firmware C/C++, integrazione hardware.</p>
+          </div>
+          <div>
+            <h4>Sezioni</h4>
+            <ul>
+              <li><a href="#servizi">Servizi</a></li>
+              <li><a href="#progetti">Progetti</a></li>
+              <li><a href="#chi-sono">Chi sono</a></li>
+              <li><a href="#competenze">Competenze</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4>Contatti</h4>
+            <ul>
+              <li><a href="mailto:elmohassef@gmail.com">elmohassef@gmail.com</a></li>
+              <li><a href="https://linkedin.com/in/youssef-el-mohajir" target="_blank" rel="noopener">LinkedIn</a></li>
+              <li><a href="https://github.com/Yel-moha" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer__bottom">
+          <span>© <span data-current-year>2026</span> Youssef El Mohajir — YEM Embedded</span>
+          <span>Costruito con Vite + TypeScript</span>
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="./src/pages/home.ts"></script>
+  </body>
+</html>

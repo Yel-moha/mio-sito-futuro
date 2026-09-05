@@ -1,0 +1,8 @@
+/* ==========================================================================
+   Foglio di stile — pagine case study (es. progetti/allarme-gsm.html)
+   Punto d'ingresso linkato da <head>. Estende main.css con gli stili
+   specifici delle pagine progetto (pinout, moduli, galleria, lightbox, codice).
+   ========================================================================== */
+
+@import './main.css';
+@import './project.css';

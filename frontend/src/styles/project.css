@@ -1,0 +1,506 @@
+/* ==========================================================================
+   Pagina case study — AllarmGSM
+   ========================================================================== */
+
+.crumbs {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--text-faint);
+  padding-top: 1.5rem;
+}
+
+.crumbs a {
+  color: var(--text-muted);
+}
+
+.p-hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(2.5rem, 1.5rem + 5vw, 4.5rem) clamp(2.5rem, 1.5rem + 4vw, 4rem);
+}
+
+.p-hero__inner {
+  display: grid;
+  grid-template-columns: 1fr 0.85fr;
+  gap: clamp(1.5rem, 1rem + 4vw, 4rem);
+  align-items: center;
+}
+
+.p-hero__lead {
+  margin: 1.2rem 0 1.8rem;
+  font-size: var(--step-1);
+  color: var(--text-muted);
+  max-width: 44ch;
+}
+
+.p-hero__media {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--surface-line);
+  box-shadow: var(--shadow-lg);
+  background: var(--bg-elev-2);
+}
+
+.p-hero__media img {
+  width: 100%;
+  max-height: 460px;
+  object-fit: cover;
+}
+
+@media (max-width: 860px) {
+  .p-hero__inner {
+    grid-template-columns: 1fr;
+  }
+  .p-hero__media {
+    order: -1;
+  }
+}
+
+/* --- Layout a due colonne per panoramica + specifiche --- */
+.split {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(1.5rem, 1rem + 4vw, 3.5rem);
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.feature-list {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 1.2rem;
+}
+
+.feature-list li {
+  position: relative;
+  padding-left: 1.9rem;
+  color: var(--text-muted);
+}
+
+.feature-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 2px solid var(--brand);
+  transform: rotate(45deg);
+}
+
+.feature-list strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* --- Specifiche (aside) --- */
+.spec {
+  border: 1px solid var(--surface-line);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  overflow: hidden;
+}
+
+.spec h3 {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--surface-line);
+}
+
+.spec dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+.spec dt,
+.spec dd {
+  padding: 0.7rem 1.25rem;
+  border-bottom: 1px solid var(--surface-line);
+  font-size: var(--step--1);
+}
+
+.spec dt {
+  font-family: var(--font-mono);
+  color: var(--text-faint);
+}
+
+.spec dd {
+  color: var(--text);
+  text-align: right;
+}
+
+.spec dl > *:nth-last-child(-n + 2) {
+  border-bottom: 0;
+}
+
+/* --- Diagramma moduli firmware --- */
+.modules {
+  margin-top: 1.5rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.modules__core {
+  padding: 1.1rem 1.4rem;
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--brand) 55%, var(--surface-line));
+  background: color-mix(in srgb, var(--brand) 10%, var(--bg-elev));
+  text-align: center;
+}
+
+.modules__core b {
+  font-family: var(--font-mono);
+  color: var(--brand-soft);
+}
+
+.modules__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.9rem;
+}
+
+.module {
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elev);
+  border: 1px solid var(--surface-line);
+}
+
+.module b {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--text);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.module span {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 720px) {
+  .modules__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 460px) {
+  .modules__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Tabella pinout --- */
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--surface-line);
+  border-radius: var(--radius);
+  margin-top: 1.5rem;
+}
+
+.pinout {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+  min-width: 460px;
+}
+
+.pinout th,
+.pinout td {
+  text-align: left;
+  padding: 0.75rem 1.1rem;
+  border-bottom: 1px solid var(--surface-line);
+}
+
+.pinout thead th {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  background: var(--bg-elev);
+}
+
+.pinout tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.pinout tbody tr:hover td {
+  background: var(--bg-elev);
+}
+
+.pinout code {
+  color: var(--accent);
+}
+
+.pinout td:first-child {
+  font-family: var(--font-mono);
+  color: var(--brand-soft);
+  white-space: nowrap;
+}
+
+/* --- Menu LCD strip --- */
+.lcd-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.9rem;
+  margin-top: 1.5rem;
+}
+
+.lcd-strip figure {
+  border: 1px solid var(--surface-line);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--bg-elev);
+}
+
+.lcd-strip img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  cursor: zoom-in;
+}
+
+.lcd-strip figcaption {
+  padding: 0.5rem 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+/* --- Galleria --- */
+.gallery-group + .gallery-group {
+  margin-top: 2.5rem;
+}
+
+.gallery-group h3 {
+  font-size: var(--step-1);
+  margin-bottom: 1rem;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.gallery figure {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--surface-line);
+  background: var(--bg-elev-2);
+  cursor: zoom-in;
+  aspect-ratio: 4 / 3;
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.gallery figure:hover img {
+  transform: scale(1.05);
+}
+
+.gallery figcaption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 1.4rem 0.9rem 0.7rem;
+  font-size: 0.8rem;
+  color: #fff;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.gallery figure:hover figcaption,
+.gallery figure:focus-visible figcaption {
+  opacity: 1;
+}
+
+/* --- Lightbox --- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 3vw, 3rem);
+  background: rgba(6, 8, 11, 0.9);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox__fig {
+  max-width: min(1100px, 100%);
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.lightbox__img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  background: var(--bg-elev);
+}
+
+.lightbox__cap {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.lightbox__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: background 0.16s ease;
+}
+
+.lightbox__btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.lightbox__btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.lightbox__btn--prev {
+  left: clamp(0.5rem, 2vw, 2rem);
+}
+.lightbox__btn--next {
+  right: clamp(0.5rem, 2vw, 2rem);
+}
+.lightbox__btn--close {
+  top: clamp(0.75rem, 2vw, 1.5rem);
+  right: clamp(0.75rem, 2vw, 1.5rem);
+  transform: none;
+}
+
+@media (max-width: 560px) {
+  .lightbox__btn--prev,
+  .lightbox__btn--next {
+    bottom: 0.5rem;
+    top: auto;
+    transform: none;
+  }
+  .lightbox__btn--prev {
+    left: 50%;
+    margin-left: -56px;
+  }
+  .lightbox__btn--next {
+    right: 50%;
+    margin-right: -56px;
+  }
+}
+
+/* --- Blocco codice --- */
+.code {
+  margin-top: 1.5rem;
+  border: 1px solid var(--surface-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--bg-elev);
+}
+
+.code__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--surface-line);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.code pre {
+  margin: 0;
+  padding: 1.1rem 1.2rem;
+  overflow-x: auto;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.code .cmt {
+  color: var(--text-faint);
+}
+.code .cmd {
+  color: var(--accent);
+}
+
+/* --- Callout --- */
+.callout {
+  margin-top: 2rem;
+  display: flex;
+  gap: 0.9rem;
+  padding: 1.2rem 1.4rem;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--brand) 8%, var(--bg-elev));
+  border: 1px solid color-mix(in srgb, var(--brand) 30%, var(--surface-line));
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.callout svg {
+  width: 20px;
+  height: 20px;
+  color: var(--brand-soft);
+  flex: none;
+  margin-top: 0.15rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2.5rem;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--text-muted);
+}
+
+.back-link svg {
+  width: 1em;
+  height: 1em;
+}
