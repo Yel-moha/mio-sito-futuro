@@ -3,9 +3,9 @@ import { resolve } from 'node:path';
 
 const root = import.meta.dirname;
 
-// Repo GitHub Pages: https://yel-moha.github.io/mio-sito-futuro/
+// Repo GitHub Pages: https://yel-moha.github.io/yem-embedded/
 export default defineConfig({
-  base: '/mio-sito-futuro/',
+  base: '/yem-embedded/',
   build: {
     outDir: 'dist',
     emptyOutDir: true,

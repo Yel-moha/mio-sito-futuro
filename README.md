@@ -9,13 +9,13 @@ chiaro/scuro automatico. Deploy automatico su **GitHub Pages**.
 ## Struttura
 
 ```
-mio-sito-futuro/
+yem-embedded/
 ├── .github/workflows/deploy.yml     # build + deploy su GitHub Pages ad ogni push su main
 ├── frontend/
 │   ├── index.html                   # Home
 │   ├── progetti/
 │   │   └── allarme-gsm.html         # Case study: allarme domestico GSM su Arduino Mega
-│   ├── vite.config.ts               # base '/mio-sito-futuro/', input multi-pagina
+│   ├── vite.config.ts               # base '/yem-embedded/', input multi-pagina
 │   ├── scripts/optimize-images.mjs  # copia+ottimizza le immagini dei progetti (usa ImageMagick)
 │   └── src/
 │       ├── styles/                  # design system (tokens, base, layout, componenti, pagina progetto)
@@ -33,7 +33,7 @@ Serve Node 20+.
 ```bash
 cd frontend
 npm install
-npm run dev        # http://localhost:5173/mio-sito-futuro/
+npm run dev        # http://localhost:5173/yem-embedded/
 ```
 
 ## Build e anteprima
@@ -61,4 +61,4 @@ Ogni push su `main` fa partire il workflow [`deploy.yml`](.github/workflows/depl
 build di `frontend/` e pubblicazione su GitHub Pages.
 
 Prima volta: in **GitHub → Settings → Pages**, impostare **Source = GitHub Actions**.
-Sito online su `https://yel-moha.github.io/mio-sito-futuro/`.
+Sito online su `https://yel-moha.github.io/yem-embedded/`.
